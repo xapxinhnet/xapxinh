@@ -1,4 +1,4 @@
-package net.xapxinh.player.server;
+package net.xapxinh.player.handler;
 
 import static net.xapxinh.player.Application.application;
 
@@ -16,7 +16,7 @@ import net.xapxinh.player.config.UserConfig;
 import net.xapxinh.player.event.VolumeChangedEvent;
 import net.xapxinh.player.model.Album;
 import net.xapxinh.player.model.MediaFile;
-import net.xapxinh.player.model.PlaylistNode;
+import net.xapxinh.player.model.PlayNode;
 import net.xapxinh.player.model.Status;
 import net.xapxinh.player.model.YoutubeVideo;
 
@@ -224,7 +224,7 @@ public class StatusRequestHandler {
 	private void in_enqueue(Map<String, String> parameters) {
 		String input = parameters.get("input");
 		String inputType = parameters.get("input_type");
-		if (PlaylistNode.TYPE.album.toString().equals(inputType)) {
+		if (PlayNode.TYPE.album.toString().equals(inputType)) {
 			Album album = gson.fromJson(input, Album.class);
 			addAlbumFile(album);
 			mediaPlayerPanel.inEnqueue(album);
@@ -241,7 +241,7 @@ public class StatusRequestHandler {
 	private void in_play(Map<String, String> parameters) {
 		String input = parameters.get("input");
 		String inputType = parameters.get("input_type");
-		if (PlaylistNode.TYPE.album.toString().equals(inputType)) {
+		if (PlayNode.TYPE.album.toString().equals(inputType)) {
 			Album album = gson.fromJson(input, Album.class);
 			addAlbumFile(album);
 			mediaPlayerPanel.inPlay(album);

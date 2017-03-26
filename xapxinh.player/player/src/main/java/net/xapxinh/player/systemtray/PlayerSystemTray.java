@@ -15,8 +15,8 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
 import net.xapxinh.player.AppProperties;
+import net.xapxinh.player.handler.TcpConnection;
 import net.xapxinh.player.hardware.Hardware4Win;
-import net.xapxinh.player.server.TcpConnection;
 
 public class PlayerSystemTray extends Thread {
 

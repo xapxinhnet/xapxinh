@@ -1,4 +1,4 @@
-package net.xapxinh.player.server;
+package net.xapxinh.player.handler;
 
 public class RequestContext {
 	public static final String CONTEXT = "context";

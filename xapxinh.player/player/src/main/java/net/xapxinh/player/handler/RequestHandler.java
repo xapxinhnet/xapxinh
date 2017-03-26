@@ -1,4 +1,4 @@
-package net.xapxinh.player.server;
+package net.xapxinh.player.handler;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import net.xapxinh.player.Application;
 import net.xapxinh.player.EmbeddedMediaPlayerPanel;
 import net.xapxinh.player.config.UserConfig;
 import net.xapxinh.player.model.MediaFile;
-import net.xapxinh.player.model.Playlist;
+import net.xapxinh.player.model.PlayList;
 import net.xapxinh.player.model.Schedule;
 import net.xapxinh.player.model.Status;
 import net.xapxinh.player.server.exception.DateTimeFormatException;
@@ -99,12 +99,8 @@ public class RequestHandler {
 	}
 
 	private String handlePlaylistRequest(final Map<String, String> params) throws Exception {
-		Playlist playlist = getPlaylist(params);
+		PlayList playlist = new PlaylistRequestHandler(mediaPlayerPanel).handleRequest(params);
 		return new PlayerResponse("playlist", playlist).toJSONString();
-	}
-	
-	private Playlist getPlaylist(Map<String, String> params) {
-		return new PlaylistRequestHandler(mediaPlayerPanel).handleRequest(params);
 	}
 
 	static String handleBrowseRequest(final Map<String, String> params) throws Exception {

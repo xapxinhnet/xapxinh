@@ -1,4 +1,4 @@
-package net.xapxinh.player.server;
+package net.xapxinh.player.handler;
 
 import org.json.JSONException;
 import org.json.JSONObject;

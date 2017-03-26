@@ -2,17 +2,15 @@ package net.xapxinh.player;
 
 import static net.xapxinh.player.Application.application;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
 import net.xapxinh.player.event.ErrorEvent;
 import net.xapxinh.player.event.FinishedEvent;
-import net.xapxinh.player.model.Playlist;
-import net.xapxinh.player.model.PlaylistLeaf;
-import net.xapxinh.player.model.PlaylistNode;
+import net.xapxinh.player.model.PlayList;
+import net.xapxinh.player.model.PlayLeaf;
+import net.xapxinh.player.model.PlayNode;
 import net.xapxinh.player.model.State;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
@@ -22,16 +20,16 @@ public class EmbeddedMediaListPlayer {
 	
 	private boolean random;
 	private PlaylistMode mode;
-	private PlaylistLeaf current;
-	private final Playlist playlist;
+	private PlayLeaf current;
+	private final PlayList playlist;
 	private final EmbeddedMediaPlayer mediaPlayer;
 	private State state;
 	 
 	EmbeddedMediaListPlayer(EmbeddedMediaPlayer mediaPlayer) {
 		this.mediaPlayer = mediaPlayer;
 		mediaPlayer.setRepeat(true);
-		playlist = new Playlist();
-		playlist.setNodes(new ArrayList<PlaylistNode>());
+		playlist = new PlayList();
+		playlist.setNodes(new ArrayList<PlayNode>());
 		setMode(PlaylistMode.DEFAULT);
 	}
 	
@@ -43,11 +41,11 @@ public class EmbeddedMediaListPlayer {
 		this.mode = mode;
 	}
 	
-	void enqueue(PlaylistNode node) {
+	void enqueue(PlayNode node) {
 		addNode(node);
 	}
 	
-	void playNode(PlaylistNode node) {
+	void playNode(PlayNode node) {
 		if (!node.hasLeaf()) {
 			playLeaf(null);
 		}
@@ -55,13 +53,13 @@ public class EmbeddedMediaListPlayer {
 		playLeaf(node.getLeafs().get(0));
 	}
 
-	private void playLeaf(PlaylistLeaf leaf) {
+	private void playLeaf(PlayLeaf leaf) {
 		mediaPlayer.stop(); // stop to avoid LoggingSubscriberExceptionHandler
 		current = leaf;
 		if (leaf != null) {
 			current.setPlayed(false);
 			current.setCurrent(true);
-			mediaPlayer.playMedia(current.getUri());
+			mediaPlayer.playMedia(current.getUrl());
 		}
 	}
 	
@@ -77,7 +75,7 @@ public class EmbeddedMediaListPlayer {
 		playlist.resetCurrent();
 	}
 
-	private PlaylistLeaf getNext(boolean autoPlay) {
+	private PlayLeaf getNext(boolean autoPlay) {
 		if (playlist.isEmpty()) {
 			return null;
 		}
@@ -96,7 +94,7 @@ public class EmbeddedMediaListPlayer {
 		else {
 			long id = 0;
 			if (current != null) {
-				id = current.getId();
+				id = current.getIdx();
 			}
 			if (!autoPlay && playlist.getDefaultUnPlayedLeaf(id) == null) {
 				playlist.resetPlayed();
@@ -105,21 +103,21 @@ public class EmbeddedMediaListPlayer {
 		}
 	}
 	
-	private void addNode(PlaylistNode node) {
+	private void addNode(PlayNode node) {
 		if (playlist.hasNode(node)) {
 			return;
 		}
-		long maxNodeId = playlist.getNodeIndex();
-		node.setId(maxNodeId + 1);
-		long maxLeafId = playlist.getLeafIndex();
+		long maxNodeIdx = playlist.getNodeIndex();
+		node.setIdx(maxNodeIdx + 1);
+		long maxLeafIdx = playlist.getLeafIndex();
 		int nodeLeafs = node.getLeafs().size();
 		for (int i = 0; i < nodeLeafs; i++) {
-			long leafId = maxLeafId + i + 1;
-			node.getLeafs().get(i).setId(leafId);
-			playlist.setLeafIndex(leafId);
+			long leafIdx = maxLeafIdx + i + 1;
+			node.getLeafs().get(i).setIdx(leafIdx);
+			playlist.setLeafIndex(leafIdx);
 		}
 		playlist.getNodes().add(node);
-		playlist.setNodeIndex(node.getId());
+		playlist.setNodeIndex(node.getIdx());
 	}
 
 	void setRandom(boolean random) {
@@ -138,7 +136,7 @@ public class EmbeddedMediaListPlayer {
 		return PlaylistMode.LOOP.equals(mode);
 	}
 
-	public Playlist getPlaylist() {
+	public PlayList getPlaylist() {
 		return playlist;
 	}
 
@@ -156,11 +154,11 @@ public class EmbeddedMediaListPlayer {
 		playLeaf(getPrev(false));
 	}
 	
-	public PlaylistLeaf getCurent() {
+	public PlayLeaf getCurent() {
 		return current;
 	}
 
-	private PlaylistLeaf getPrev(boolean autoPlay) {
+	private PlayLeaf getPrev(boolean autoPlay) {
 		if (playlist.isEmpty()) {
 			return null;
 		}
@@ -178,16 +176,16 @@ public class EmbeddedMediaListPlayer {
 		}
 	}
 
-	public void removeLeaf(long leafId) {
-		if (current != null && current.getId() == leafId) {
+	public void removeLeaf(long leafIdx) {
+		if (current != null && current.getIdx() == leafIdx) {
 			stop();
 		}
-		playlist.removeLeaf(leafId);
+		playlist.removeLeaf(leafIdx);
 	}
 	
 
 	public void removeNode(long nodeId) {
-		PlaylistNode node = playlist.getNode(nodeId);
+		PlayNode node = playlist.getNode(nodeId);
 		if (node != null && node.isCurrent()) {
 			stop();
 		}
@@ -218,13 +216,13 @@ public class EmbeddedMediaListPlayer {
 		playLeaf(getNext(true));
 	}
 
-	void playLeaf(long id) {
-		PlaylistLeaf leaf = playlist.getLeaf(id);
+	void playLeaf(long idx) {
+		PlayLeaf leaf = playlist.getLeaf(idx);
 		playLeaf(leaf);
 	}
 
-	public void playNode(long id) {
-		PlaylistNode node = playlist.getNode(id);
+	public void playNode(long idx) {
+		PlayNode node = playlist.getNode(idx);
 		playNode(node);
 	}
 

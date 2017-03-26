@@ -1,4 +1,4 @@
-package net.xapxinh.player.server;
+package net.xapxinh.player.handler;
 
 import java.io.BufferedReader;
 import java.io.IOException;

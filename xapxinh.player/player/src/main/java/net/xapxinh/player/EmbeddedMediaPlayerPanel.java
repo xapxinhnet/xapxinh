@@ -12,9 +12,9 @@ import net.xapxinh.player.event.StoppedEvent;
 import net.xapxinh.player.model.Album;
 import net.xapxinh.player.model.Song;
 import net.xapxinh.player.model.MediaFile;
-import net.xapxinh.player.model.Playlist;
-import net.xapxinh.player.model.PlaylistLeaf;
-import net.xapxinh.player.model.PlaylistNode;
+import net.xapxinh.player.model.PlayList;
+import net.xapxinh.player.model.PlayLeaf;
+import net.xapxinh.player.model.PlayNode;
 import net.xapxinh.player.model.State;
 import net.xapxinh.player.model.Status;
 import net.xapxinh.player.model.YoutubeVideo;
@@ -117,26 +117,26 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		mediaListPlayer.playNode(createNode(youtubeVideo));
 	}
 	
-	private PlaylistNode createNode(YoutubeVideo youtubeVideo) {
-		PlaylistNode node = new PlaylistNode();
-		node.setType(PlaylistNode.TYPE.youtube.toString());
-		List<PlaylistLeaf> leafs = new ArrayList<PlaylistLeaf>();
-		PlaylistLeaf leaf = new PlaylistLeaf();
+	private PlayNode createNode(YoutubeVideo youtubeVideo) {
+		PlayNode node = new PlayNode();
+		node.setType(PlayNode.TYPE.youtube.toString());
+		List<PlayLeaf> leafs = new ArrayList<PlayLeaf>();
+		PlayLeaf leaf = new PlayLeaf();
 		leaf.setName(youtubeVideo.getTitle());
-		leaf.setType(PlaylistLeaf.TYPE.youtube.toString());
-		leaf.setUri(youtubeVideo.getUri());
+		leaf.setType(PlayLeaf.TYPE.youtube.toString());
+		leaf.setUrl(youtubeVideo.getUri());
 		leafs.add(leaf);
 		node.setLeafs(leafs);
 		return node;
 	}
 	
-	private PlaylistNode createNode(MediaFile mediaFile) {
-		PlaylistNode node = new PlaylistNode();
-		List<PlaylistLeaf> leafs = new ArrayList<PlaylistLeaf>();
+	private PlayNode createNode(MediaFile mediaFile) {
+		PlayNode node = new PlayNode();
+		List<PlayLeaf> leafs = new ArrayList<PlayLeaf>();
 		if (MediaFile.TYPE.dir.toString().equals(mediaFile.getType())) {
 			File dir = new File(mediaFile.getPath());
 			node.setName(dir.getAbsolutePath());
-			node.setType(PlaylistNode.TYPE.dir.toString());
+			node.setType(PlayNode.TYPE.dir.toString());
 			for (File file : dir.listFiles()) {
 				if (file.isFile() && MediaFileFilter.INSTANCE.accept(file)) {
 					leafs.add(createLeaf(file));
@@ -146,7 +146,7 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		else {
 			File file = new File(mediaFile.getPath());
 			node.setName(file.getParentFile().getAbsolutePath());
-			node.setType(PlaylistNode.TYPE.dir.toString());
+			node.setType(PlayNode.TYPE.dir.toString());
 			if (file.isFile() && MediaFileFilter.INSTANCE.accept(file)) {
 				leafs.add(createLeaf(file));
 			}
@@ -155,12 +155,12 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		return node;
 	}
 
-	private PlaylistNode createNode(Album album) {
-		PlaylistNode node = new PlaylistNode();
+	private PlayNode createNode(Album album) {
+		PlayNode node = new PlayNode();
 		node.setName(album.getTitle());
-		node.setType(PlaylistNode.TYPE.album.toString());
+		node.setType(PlayNode.TYPE.album.toString());
 		node.setImage(album.getImage());
-		List<PlaylistLeaf> leafs = new ArrayList<PlaylistLeaf>();
+		List<PlayLeaf> leafs = new ArrayList<PlayLeaf>();
 		for (Song albumItem : album.getSongs()) {
 			leafs.add(createLeaf(albumItem));
 		}
@@ -168,23 +168,23 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		return node;
 	}
 	
-	private PlaylistLeaf createLeaf(Song albumItem) {
-		PlaylistLeaf leaf = new PlaylistLeaf();
+	private PlayLeaf createLeaf(Song albumItem) {
+		PlayLeaf leaf = new PlayLeaf();
 		leaf.setName(albumItem.getTitle());
-		leaf.setType(PlaylistLeaf.TYPE.file.toString());
+		leaf.setType(PlayLeaf.TYPE.file.toString());
 		leaf.setImage(albumItem.getImage());
-		leaf.setUri(albumItem.getUri());
+		leaf.setUrl(albumItem.getUri());
 		leaf.setArtists(albumItem.getArtists());
 		leaf.setAuthor(albumItem.getAuthor());
 		return leaf;
 	}
 
-	private PlaylistNode createNode(File[] files) {
+	private PlayNode createNode(File[] files) {
 		File folder = files[0].getParentFile();		
-		PlaylistNode node = new PlaylistNode();
+		PlayNode node = new PlayNode();
 		node.setName(folder.getName());
-		node.setType(PlaylistNode.TYPE.dir.toString());
-		List<PlaylistLeaf> leafs = new ArrayList<PlaylistLeaf>();
+		node.setType(PlayNode.TYPE.dir.toString());
+		List<PlayLeaf> leafs = new ArrayList<PlayLeaf>();
 		for (File file : files) {
 			leafs.add(createLeaf(file));
 		}
@@ -192,11 +192,11 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		return node;
 	}
 
-	private PlaylistLeaf createLeaf(File file) {
-		PlaylistLeaf leaf = new PlaylistLeaf();
+	private PlayLeaf createLeaf(File file) {
+		PlayLeaf leaf = new PlayLeaf();
 		leaf.setName(file.getName());
-		leaf.setUri(file.getAbsolutePath());
-		leaf.setType(PlaylistLeaf.TYPE.file.toString());
+		leaf.setUrl(file.getAbsolutePath());
+		leaf.setType(PlayLeaf.TYPE.file.toString());
 		return leaf;
 	}
 
@@ -214,8 +214,8 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		status.setRandom(mediaListPlayer.isRandom());
 		status.setRepeat(mediaListPlayer.isRepeat());
 		status.setLoop(mediaListPlayer.isLoop());
-		PlaylistNode currentNode = mediaListPlayer.getPlaylist().getCurrentNode();
-		status.setPlaylistNode(currentNode);
+		PlayNode currentNode = mediaListPlayer.getPlaylist().getCurrentNode();
+		status.setPlayNode(currentNode);
 		if (getMediaPlayer().getMediaState() != null) {
 			State state = State.getState(getMediaPlayer().getMediaState().intValue());
 			if (state == null) {
@@ -236,7 +236,7 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		return timeMilliSeconds/1000;
 	}
 
-	public Playlist getPlaylist() {
+	public PlayList getPlaylist() {
 		return mediaListPlayer.getPlaylist();
 	}
 
