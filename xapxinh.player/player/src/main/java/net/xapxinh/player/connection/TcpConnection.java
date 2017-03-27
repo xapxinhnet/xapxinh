@@ -1,4 +1,4 @@
-package net.xapxinh.player.handler;
+package net.xapxinh.player.connection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +14,8 @@ import org.json.JSONObject;
 import net.xapxinh.player.AppProperties;
 import net.xapxinh.player.config.AppConfig;
 import net.xapxinh.player.config.UserConfig;
+import net.xapxinh.player.handler.PlayerResponse;
+import net.xapxinh.player.handler.RequestHandler;
 import net.xapxinh.player.hardware.Hardware4Win;
 import net.xapxinh.player.server.exception.PlayerException;
 

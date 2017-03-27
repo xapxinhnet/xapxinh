@@ -1,4 +1,4 @@
-package net.xapxinh.player.handler;
+package net.xapxinh.player.connection;
 
 import java.util.Map;
 

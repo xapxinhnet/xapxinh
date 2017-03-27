@@ -170,6 +170,8 @@ public class StatusRequestHandler {
 
 	private void pl_empty(Map<String, String> parameters) {
 		mediaPlayerPanel.emptyPlaylist();
+		mediaPlayerPanel.getPlaylist().setId(0L);
+		mediaPlayerPanel.getPlaylist().setName(null);
 	}
 
 	private void pl_stop(Map<String, String> parameters) {

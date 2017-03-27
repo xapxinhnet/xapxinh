@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.xapxinh.player.Application;
 import net.xapxinh.player.EmbeddedMediaPlayerPanel;
 import net.xapxinh.player.config.UserConfig;
+import net.xapxinh.player.connection.TcpRequest;
 import net.xapxinh.player.model.MediaFile;
 import net.xapxinh.player.model.PlayList;
 import net.xapxinh.player.model.Schedule;
@@ -38,7 +39,7 @@ public class RequestHandler {
 		mediaPlayerPanel = Application.application().mediaPlayerPanel();
 	}
 	
-	RequestHandler(TcpRequest tcpRequest) {
+	public RequestHandler(TcpRequest tcpRequest) {
 		params = tcpRequest.getParameters();
 		mediaPlayerPanel = Application.application().mediaPlayerPanel();
 	}

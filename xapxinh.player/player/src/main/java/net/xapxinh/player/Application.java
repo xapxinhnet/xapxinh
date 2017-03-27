@@ -34,10 +34,10 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import net.xapxinh.player.connection.TcpConnection;
 import net.xapxinh.player.event.ShutdownEvent;
 import net.xapxinh.player.event.TickEvent;
 import net.xapxinh.player.event.VolumeChangedEvent;
-import net.xapxinh.player.handler.TcpConnection;
 import net.xapxinh.player.systemtray.PlayerSystemTray;
 import net.xapxinh.player.thread.PlayerSchedulesExecutor;
 import net.xapxinh.player.view.action.mediaplayer.MediaPlayerActions;
