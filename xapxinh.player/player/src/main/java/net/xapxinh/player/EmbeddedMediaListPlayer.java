@@ -8,8 +8,8 @@ import org.apache.log4j.Logger;
 
 import net.xapxinh.player.event.ErrorEvent;
 import net.xapxinh.player.event.FinishedEvent;
-import net.xapxinh.player.model.PlayList;
 import net.xapxinh.player.model.PlayLeaf;
+import net.xapxinh.player.model.PlayList;
 import net.xapxinh.player.model.PlayNode;
 import net.xapxinh.player.model.State;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
@@ -59,7 +59,7 @@ public class EmbeddedMediaListPlayer {
 		if (leaf != null) {
 			current.setPlayed(false);
 			current.setCurrent(true);
-			mediaPlayer.playMedia(current.getUrl());
+			mediaPlayer.playMedia(current.getMrl());
 		}
 	}
 	

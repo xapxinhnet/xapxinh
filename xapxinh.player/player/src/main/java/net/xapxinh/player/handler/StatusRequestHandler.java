@@ -16,6 +16,7 @@ import net.xapxinh.player.config.UserConfig;
 import net.xapxinh.player.event.VolumeChangedEvent;
 import net.xapxinh.player.model.Album;
 import net.xapxinh.player.model.MediaFile;
+import net.xapxinh.player.model.PlayList;
 import net.xapxinh.player.model.PlayNode;
 import net.xapxinh.player.model.Status;
 import net.xapxinh.player.model.YoutubeVideo;
@@ -238,6 +239,10 @@ public class StatusRequestHandler {
 			YoutubeVideo video = gson.fromJson(input, YoutubeVideo.class);
 			mediaPlayerPanel.inEnqueue(video);
 		}
+		else if ("playlist".equals(inputType)) {
+			PlayList playlist = gson.fromJson(input, PlayList.class);
+			mediaPlayerPanel.inEnqueue(playlist);
+		}
 	}
 
 	private void in_play(Map<String, String> parameters) {
@@ -254,6 +259,10 @@ public class StatusRequestHandler {
 		else if ("youtube".equals(inputType)) {
 			YoutubeVideo video = gson.fromJson(input, YoutubeVideo.class);
 			mediaPlayerPanel.inPlay(video);
+		}
+		else if ("playlist".equals(inputType)) {
+			PlayList playlist = gson.fromJson(input, PlayList.class);
+			mediaPlayerPanel.inPlay(playlist);
 		}
 	}
 

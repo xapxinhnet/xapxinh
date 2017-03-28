@@ -4,7 +4,7 @@ package net.xapxinh.player.model;
 public class YoutubeVideo {
 	
 	private String id;
-	private String uri;
+	private String mrl;
 	private String title;
 	private String thumbnail;
 	private long duration;
@@ -21,12 +21,12 @@ public class YoutubeVideo {
 		this.id = id;
 	}
 
-	public String getUri() {
-		return uri;
+	public String getMrl() {
+		return mrl;
 	}
 	
-	public void setUri(String uri) {
-		this.uri = uri;
+	public void setMrl(String mrl) {
+		this.mrl = mrl;
 	}
 
 	public String getThumbnail() {

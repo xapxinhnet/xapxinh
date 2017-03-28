@@ -10,11 +10,11 @@ import net.xapxinh.player.event.PausedEvent;
 import net.xapxinh.player.event.PlayingEvent;
 import net.xapxinh.player.event.StoppedEvent;
 import net.xapxinh.player.model.Album;
-import net.xapxinh.player.model.Song;
 import net.xapxinh.player.model.MediaFile;
-import net.xapxinh.player.model.PlayList;
 import net.xapxinh.player.model.PlayLeaf;
+import net.xapxinh.player.model.PlayList;
 import net.xapxinh.player.model.PlayNode;
+import net.xapxinh.player.model.Song;
 import net.xapxinh.player.model.State;
 import net.xapxinh.player.model.Status;
 import net.xapxinh.player.model.YoutubeVideo;
@@ -124,7 +124,8 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		PlayLeaf leaf = new PlayLeaf();
 		leaf.setName(youtubeVideo.getTitle());
 		leaf.setType(PlayLeaf.TYPE.youtube.toString());
-		leaf.setUrl(youtubeVideo.getUri());
+		leaf.setUrl(youtubeVideo.getId());
+		leaf.setMrl(youtubeVideo.getMrl());
 		leafs.add(leaf);
 		node.setLeafs(leafs);
 		return node;
@@ -168,14 +169,14 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		return node;
 	}
 	
-	private PlayLeaf createLeaf(Song albumItem) {
+	private PlayLeaf createLeaf(Song song) {
 		PlayLeaf leaf = new PlayLeaf();
-		leaf.setName(albumItem.getTitle());
+		leaf.setName(song.getTitle());
 		leaf.setType(PlayLeaf.TYPE.file.toString());
-		leaf.setImage(albumItem.getImage());
-		leaf.setUrl(albumItem.getUri());
-		leaf.setArtists(albumItem.getArtists());
-		leaf.setAuthor(albumItem.getAuthor());
+		leaf.setImage(song.getImage());
+		leaf.setMrl(song.getUrl());
+		leaf.setArtists(song.getArtists());
+		leaf.setAuthor(song.getAuthor());
 		return leaf;
 	}
 
@@ -195,7 +196,7 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 	private PlayLeaf createLeaf(File file) {
 		PlayLeaf leaf = new PlayLeaf();
 		leaf.setName(file.getName());
-		leaf.setUrl(file.getAbsolutePath());
+		leaf.setMrl(file.getAbsolutePath());
 		leaf.setType(PlayLeaf.TYPE.file.toString());
 		return leaf;
 	}
@@ -306,4 +307,17 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		}
 	}
 
+	public void inPlay(PlayList playlist) {
+		inEnqueue(playlist);
+		playPlaylist();
+	}
+
+	public void inEnqueue(PlayList playlist) {
+		emptyPlaylist();
+		getPlaylist().setId(playlist.getId());
+		getPlaylist().setName(playlist.getName());
+		for (PlayNode node : playlist.getNodes()) {
+			mediaListPlayer.enqueue(node);
+		}
+	}
 }
