@@ -61,7 +61,7 @@ public class PlayNode {
 
 	public List<PlayLeaf> getLeafs() {
 		if (leafs == null) {
-			return Collections.emptyList();
+			leafs = new ArrayList<>();
 		}
 		return leafs;
 	}

@@ -5,7 +5,7 @@ public class PlayLeaf {
 	private static final String CURRENT = "current";
 
 	public enum TYPE {
-		file, youtube, karaoke;
+		file, track, youtube;
 	}
 	
 	private long id;

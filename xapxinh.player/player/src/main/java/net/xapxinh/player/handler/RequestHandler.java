@@ -26,10 +26,11 @@ import uk.co.caprica.vlcj.filter.MediaFileFilter;
 public class RequestHandler {
 	
 	protected static final String COMMAND = "command";
-	private static final String STATUS = "/status";
-	private static final String PLAYLIST = "/playlist";
-	private static final String BROWSE = "/browse";
-	private static final String SCHEDULE = "/schedule";
+
+	private static final String CONTEXT_STATUS = "/status";
+	private static final String CONTEXT_PLAYLIST = "/playlist";
+	private static final String CONTEXT_BROWSE = "/browse";
+	private static final String CONTEXT_SCHEDULE = "/schedule";
 	
 	private final Map<String, String> params;
 	private final EmbeddedMediaPlayerPanel mediaPlayerPanel;
@@ -69,16 +70,16 @@ public class RequestHandler {
 		final String context = params.get(RequestContext.CONTEXT);
 		params.remove(RequestContext.CONTEXT);
 		
-		if (context.equals(RequestContext.REQUESTS + STATUS)) {
+		if (context.equals(RequestContext.REQUESTS + CONTEXT_STATUS)) {
 			return handleStatusRequest(params);
 		}
-		if (context.equals(RequestContext.REQUESTS + PLAYLIST)) {
+		if (context.equals(RequestContext.REQUESTS + CONTEXT_PLAYLIST)) {
 			return handlePlaylistRequest(params);
 		}
-		if (context.equals(RequestContext.REQUESTS + BROWSE)) {
+		if (context.equals(RequestContext.REQUESTS + CONTEXT_BROWSE)) {
 			return handleBrowseRequest(params);
 		}
-		if (context.equals(RequestContext.REQUESTS + SCHEDULE)) {
+		if (context.equals(RequestContext.REQUESTS + CONTEXT_SCHEDULE)) {
 			return handleScheduleRequest(params);
 		}
 		throw new UnknownContextException(context);

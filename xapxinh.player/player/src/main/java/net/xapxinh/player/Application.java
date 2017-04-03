@@ -34,6 +34,8 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import com.google.common.eventbus.EventBus;
+
 import net.xapxinh.player.connection.TcpConnection;
 import net.xapxinh.player.event.ShutdownEvent;
 import net.xapxinh.player.event.TickEvent;
@@ -48,8 +50,6 @@ import uk.co.caprica.vlcj.log.NativeLog;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import uk.co.caprica.vlcj.runtime.streams.NativeStreams;
-
-import com.google.common.eventbus.EventBus;
 
 /**
  * Global application state.
@@ -242,6 +242,6 @@ public final class Application extends Vlcj {
 			String mrl = file.getAbsolutePath();
 			application().addRecentMedia(mrl);
 		}
-		mediaPlayerPanel.inPlay(files);
+		mediaPlayerPanel.inEnqueue(files, true);
 	}
 }

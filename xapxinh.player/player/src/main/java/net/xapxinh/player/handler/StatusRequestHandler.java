@@ -16,12 +16,20 @@ import net.xapxinh.player.config.UserConfig;
 import net.xapxinh.player.event.VolumeChangedEvent;
 import net.xapxinh.player.model.Album;
 import net.xapxinh.player.model.MediaFile;
+import net.xapxinh.player.model.PlayLeaf;
 import net.xapxinh.player.model.PlayList;
 import net.xapxinh.player.model.PlayNode;
+import net.xapxinh.player.model.Song;
 import net.xapxinh.player.model.Status;
 import net.xapxinh.player.model.YoutubeVideo;
 
 public class StatusRequestHandler {
+	
+	
+	public static final String PLAYLEAF = "playleaf";
+	public static final String PLAYNODE = "playnode";
+	public static final String PLAYLIST = "playlist";
+	
 	private static final Logger LOGGER = Logger.getLogger(StatusRequestHandler.class.getName());
 	private final EmbeddedMediaPlayerPanel mediaPlayerPanel;
 	private final Gson gson;
@@ -47,7 +55,7 @@ public class StatusRequestHandler {
 			in_play(parameters);
 		}
 		else if ("in_enqueue".equals(command)) {
-			in_enqueue(parameters);
+			in_enqueue(parameters, false);
 		}
 		else if ("pl_previous".equals(command)) {
 			pl_previous(parameters);
@@ -208,10 +216,10 @@ public class StatusRequestHandler {
 	private void pl_delete(Map<String, String> parameters) {
 		String id = parameters.get("id");
 		String type = parameters.get("type");
-		if ("leaf".equals(type)) {
+		if (PLAYLEAF.equals(type)) {
 			mediaPlayerPanel.removePlaylistLeaf(Long.parseLong(id));
 		}
-		else if ("node".equals(type)) {
+		else if (PLAYNODE.equals(type)) {
 			mediaPlayerPanel.removePlaylistNode(Long.parseLong(id));
 		}
 	}
@@ -224,46 +232,42 @@ public class StatusRequestHandler {
 		mediaPlayerPanel.getMediaListPlayer().playPrevious();
 	}
 	
-	private void in_enqueue(Map<String, String> parameters) {
+	private void in_enqueue(Map<String, String> parameters, boolean isPlay) {
 		String input = parameters.get("input");
 		String inputType = parameters.get("input_type");
 		if (PlayNode.TYPE.album.toString().equals(inputType)) {
 			Album album = gson.fromJson(input, Album.class);
 			addAlbumFile(album);
-			mediaPlayerPanel.inEnqueue(album);
+			mediaPlayerPanel.inEnqueue(album, isPlay);
 		}
-		else if ("dir".equals(inputType) || "file".equals(inputType)) {
-			mediaPlayerPanel.inEnqueue(createMediaFile(input));
+		else if (PlayNode.TYPE.dir.toString().equals(inputType) 
+				|| PlayLeaf.TYPE.file.toString().equals(inputType)) {
+			mediaPlayerPanel.inEnqueue(createMediaFile(input), isPlay);
 		}
-		else if ("youtube".equals(inputType)) {
+		else if (PlayNode.TYPE.youtube.toString().equals(inputType)) {
 			YoutubeVideo video = gson.fromJson(input, YoutubeVideo.class);
-			mediaPlayerPanel.inEnqueue(video);
+			mediaPlayerPanel.inEnqueue(video, isPlay);
 		}
-		else if ("playlist".equals(inputType)) {
+		else if (PlayLeaf.TYPE.track.toString().equals(inputType)) {
+			Song song = gson.fromJson(input, Song.class);
+			mediaPlayerPanel.inEnqueue(song, isPlay);
+		}
+		else if (PLAYLIST.equals(inputType)) {
 			PlayList playlist = gson.fromJson(input, PlayList.class);
-			mediaPlayerPanel.inEnqueue(playlist);
+			mediaPlayerPanel.inEnqueue(playlist, isPlay);
+		}
+		else if (PLAYNODE.equals(inputType)) {
+			PlayNode playnode = gson.fromJson(input, PlayNode.class);
+			mediaPlayerPanel.inEnqueue(playnode, isPlay);
+		}
+		else if (PLAYLEAF.equals(inputType)) {
+			PlayLeaf playleaf = gson.fromJson(input, PlayLeaf.class);
+			mediaPlayerPanel.inEnqueue(playleaf, isPlay);
 		}
 	}
 
 	private void in_play(Map<String, String> parameters) {
-		String input = parameters.get("input");
-		String inputType = parameters.get("input_type");
-		if (PlayNode.TYPE.album.toString().equals(inputType)) {
-			Album album = gson.fromJson(input, Album.class);
-			addAlbumFile(album);
-			mediaPlayerPanel.inPlay(album);
-		}
-		else if (MediaFile.TYPE.dir.toString().equals(inputType) || MediaFile.TYPE.file.toString().equals(inputType)) {
-			mediaPlayerPanel.inPlay(createMediaFile(input));
-		}
-		else if ("youtube".equals(inputType)) {
-			YoutubeVideo video = gson.fromJson(input, YoutubeVideo.class);
-			mediaPlayerPanel.inPlay(video);
-		}
-		else if ("playlist".equals(inputType)) {
-			PlayList playlist = gson.fromJson(input, PlayList.class);
-			mediaPlayerPanel.inPlay(playlist);
-		}
+		in_enqueue(parameters, true);
 	}
 
 	private void addAlbumFile(Album album) {
@@ -315,10 +319,10 @@ public class StatusRequestHandler {
 	private void pl_play(Map<String, String> parameters) {
 		String id = parameters.get("id");
 		String type = parameters.get("type");
-		if ("leaf".equals(type)) {
+		if (PLAYLEAF.equals(type)) {
 			mediaPlayerPanel.playPlaylistLeaf(Long.parseLong(id));
 		}
-		else if ("node".equals(type)) {
+		else if (PLAYNODE.equals(type)) {
 			mediaPlayerPanel.playPlaylistNode(Long.parseLong(id));
 		}
 		else {

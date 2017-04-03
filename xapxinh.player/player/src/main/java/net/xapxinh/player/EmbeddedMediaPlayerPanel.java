@@ -79,42 +79,23 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
         System.out.println("mediaSubItemAdded: " + mediaPlayer.mrl(subItem));
     }
 	
-	public void inEnqueue(MediaFile mediaFile) {
-		mediaListPlayer.enqueue(createNode(mediaFile));
+	public void inEnqueue(MediaFile mediaFile, boolean isPlay) {
+		mediaListPlayer.enqueueNode(createNode(mediaFile), isPlay);
 	}
 	
-	public void inEnqueue(YoutubeVideo youtubeVideo) {
-		mediaListPlayer.enqueue(createNode(youtubeVideo));
+	public void inEnqueue(YoutubeVideo youtubeVideo, boolean isPlay) {
+		mediaListPlayer.enqueueNode(createNode(youtubeVideo), isPlay);
 	}
 	
-	public void inEnqueue(File[] files) {
+	public void inEnqueue(Album album, boolean isPlay) {
+		mediaListPlayer.enqueueNode(createNode(album), isPlay);
+	}
+	
+	public void inEnqueue(File[] files, boolean isPlay) {
 		if (files.length == 0) {
 			return;
 		}
-		mediaListPlayer.enqueue(createNode(files));
-	}
-	
-	public void inEnqueue(Album album) {
-		mediaListPlayer.enqueue(createNode(album));
-	}
-	
-	public void inPlay(MediaFile mediaFile) {
-		mediaListPlayer.playNode(createNode(mediaFile));
-	}
-	
-	public void inPlay(File[] files) {
-		if (files.length == 0) {
-			return;
-		}
-		mediaListPlayer.playNode(createNode(files));
-	}
-	
-	public void inPlay(Album album) {
-		mediaListPlayer.playNode(createNode(album));
-	}
-	
-	public void inPlay(YoutubeVideo youtubeVideo) {
-		mediaListPlayer.playNode(createNode(youtubeVideo));
+		mediaListPlayer.enqueueNode(createNode(files), isPlay);
 	}
 	
 	private PlayNode createNode(YoutubeVideo youtubeVideo) {
@@ -307,17 +288,44 @@ public class EmbeddedMediaPlayerPanel extends EmbeddedMediaPlayerComponent {
 		}
 	}
 
-	public void inPlay(PlayList playlist) {
-		inEnqueue(playlist);
-		playPlaylist();
-	}
-
-	public void inEnqueue(PlayList playlist) {
+	public void inEnqueue(PlayList playlist, boolean isPlay) {
 		emptyPlaylist();
 		getPlaylist().setId(playlist.getId());
 		getPlaylist().setName(playlist.getName());
 		for (PlayNode node : playlist.getNodes()) {
-			mediaListPlayer.enqueue(node);
+			mediaListPlayer.enqueueNode(node, false);
 		}
+		if (isPlay) {
+			playPlaylist();
+		}
+	}
+
+	public void inEnqueue(PlayNode playnode, boolean isPlay) {
+		mediaListPlayer.enqueueNode(playnode, isPlay);
+	}
+
+	public void inEnqueue(PlayLeaf playLeaf, boolean isPlay) {
+		PlayNode node = new PlayNode();
+		node.setLeafs(new ArrayList<PlayLeaf>());
+		if (PlayLeaf.TYPE.file.toString().equals(playLeaf.getType())) {
+			node.setType(PlayNode.TYPE.dir.toString());
+		}
+		else if (PlayLeaf.TYPE.track.toString().equals(playLeaf.getType())) {
+			node.setType(PlayNode.TYPE.album.toString());
+		}
+		else if (PlayLeaf.TYPE.youtube.toString().equals(playLeaf.getType())) {
+			node.setType(PlayNode.TYPE.youtube.toString());
+		}
+		node.getLeafs().add(playLeaf);
+		inEnqueue(node, isPlay);
+	}
+
+	public void inEnqueue(Song song, boolean isPlay) {
+		PlayNode node = new PlayNode();
+		node.setLeafs(new ArrayList<PlayLeaf>());
+		node.setType(PlayNode.TYPE.album.toString());
+		PlayLeaf leaf = createLeaf(song);
+		node.getLeafs().add(leaf);
+		inEnqueue(node, isPlay);
 	}
 }

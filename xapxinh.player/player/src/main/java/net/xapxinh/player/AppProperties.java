@@ -17,6 +17,8 @@ import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 
 import net.xapxinh.player.config.AppUtil;
+import net.xapxinh.player.config.UserConfig;
+import net.xapxinh.player.hardware.Hardware4Win;
 import net.xapxinh.player.model.Schedule;
 import net.xapxinh.player.util.TimeUtil;
 
@@ -183,5 +185,12 @@ public class AppProperties {
 			schedule = newSchedule();
 		}
 		return schedule;
+	}
+
+	public static String getHardwareId() {
+		if (isWinPlatform()) {
+			return Hardware4Win.getMotherboardSN();
+		}
+		return UserConfig.getInstance().HARDWARE_ID;
 	}
 }

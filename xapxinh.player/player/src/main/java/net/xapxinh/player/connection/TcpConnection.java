@@ -16,7 +16,6 @@ import net.xapxinh.player.config.AppConfig;
 import net.xapxinh.player.config.UserConfig;
 import net.xapxinh.player.handler.PlayerResponse;
 import net.xapxinh.player.handler.RequestHandler;
-import net.xapxinh.player.hardware.Hardware4Win;
 import net.xapxinh.player.server.exception.PlayerException;
 
 public class TcpConnection extends Thread {
@@ -105,7 +104,7 @@ public class TcpConnection extends Thread {
 
 			final JSONObject param = new JSONObject();
 
-			param.put("mac", Hardware4Win.getMotherboardSN());
+			param.put("mac", AppProperties.getHardwareId());
 			param.put("pass", AppProperties.getRandomPassword());
 			param.put("password", UserConfig.getInstance().LOGIN_PASSWORD);
 

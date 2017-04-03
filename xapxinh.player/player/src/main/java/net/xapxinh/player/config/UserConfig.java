@@ -13,6 +13,7 @@ public class UserConfig {
 	private static final Logger LOGGER = Logger.getLogger(UserConfig.class.getName());
 	
 	private static UserConfig instance;
+	public final String HARDWARE_ID;
 	public final String SERVER_HOST;
 	public Integer SERVER_PORT;
 	public final String LOGIN_PASSWORD;
@@ -32,6 +33,7 @@ public class UserConfig {
 			LOGGER.error(ex.getMessage(), ex);
 		}
 		SERVER_HOST = userConfig.getProperty("server_host");
+		HARDWARE_ID = userConfig.getProperty("hardware_id");
 		try {
 			SERVER_PORT = Integer.parseInt(userConfig.getProperty("server_port"));
 		}

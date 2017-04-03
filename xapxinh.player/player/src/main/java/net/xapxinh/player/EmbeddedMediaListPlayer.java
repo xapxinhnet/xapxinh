@@ -41,25 +41,13 @@ public class EmbeddedMediaListPlayer {
 		this.mode = mode;
 	}
 	
-	void enqueue(PlayNode node) {
+	void enqueueNode(PlayNode node, boolean isPlay) {
 		addNode(node);
-	}
-	
-	void playNode(PlayNode node) {
-		if (!node.hasLeaf()) {
-			playLeaf(null);
-		}
-		addNode(node);
-		playLeaf(node.getLeafs().get(0));
-	}
-
-	private void playLeaf(PlayLeaf leaf) {
-		mediaPlayer.stop(); // stop to avoid LoggingSubscriberExceptionHandler
-		current = leaf;
-		if (leaf != null) {
-			current.setPlayed(false);
-			current.setCurrent(true);
-			mediaPlayer.playMedia(current.getMrl());
+		if (isPlay) {
+			if (!node.hasLeaf()) {
+				playLeaf(null);
+			}
+			playLeaf(node.getLeafs().get(0));
 		}
 	}
 	
@@ -215,17 +203,27 @@ public class EmbeddedMediaListPlayer {
 		current.setPlayed(true);
 		playLeaf(getNext(true));
 	}
-
-	void playLeaf(long idx) {
+	
+	public void playLeaf(long idx) {
 		PlayLeaf leaf = playlist.getLeaf(idx);
 		playLeaf(leaf);
 	}
 
 	public void playNode(long idx) {
 		PlayNode node = playlist.getNode(idx);
-		playNode(node);
+		playLeaf(node.getLeafs().get(0));
 	}
 
+	private void playLeaf(PlayLeaf leaf) {
+		mediaPlayer.stop(); // stop to avoid LoggingSubscriberExceptionHandler
+		current = leaf;
+		if (leaf != null) {
+			current.setPlayed(false);
+			current.setCurrent(true);
+			mediaPlayer.playMedia(current.getMrl());
+		}
+	}
+	
 	public void playPlaylist() {
 		if (!playlist.getLeafs().isEmpty()) {
 			playlist.resetPlayed();
