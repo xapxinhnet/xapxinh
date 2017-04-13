@@ -14,6 +14,7 @@ public class AppConfig {
 	
 	public final String CENTER_SERVER_HOST;
 	public int CENTER_SERVER_PORT;
+	public final String DATA_SERVER_URL;
 	public String VLC_LIBRARY_PATH;
 	public final String UPDATE_SITE;
 	public boolean INTERVAL_UPDATE;
@@ -28,6 +29,7 @@ public class AppConfig {
 		catch (final IOException ex) {
 			ex.printStackTrace();
 		}
+		DATA_SERVER_URL = appProperties.getProperty("data_server_url");
 		if (UserConfig.getInstance().SERVER_HOST != null) {
 			CENTER_SERVER_HOST = UserConfig.getInstance().SERVER_HOST;
 		}

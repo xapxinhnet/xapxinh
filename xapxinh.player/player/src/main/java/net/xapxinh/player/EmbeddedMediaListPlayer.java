@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import net.xapxinh.player.config.AppConfig;
 import net.xapxinh.player.event.ErrorEvent;
 import net.xapxinh.player.event.FinishedEvent;
 import net.xapxinh.player.model.PlayLeaf;
@@ -220,7 +221,22 @@ public class EmbeddedMediaListPlayer {
 		if (leaf != null) {
 			current.setPlayed(false);
 			current.setCurrent(true);
-			mediaPlayer.playMedia(current.getMrl());
+			if (PlayLeaf.TYPE.youtube.toString().equals(leaf.getType())
+					&& leaf.getMrl() == null) {
+				try {
+					String mrl = HttpRequestUtil.sendHttpGETRequest(AppConfig.getInstance().DATA_SERVER_URL 
+							+ "videos/" + leaf.getUrl() + "/videourl?mac=" + AppProperties.getHardwareId());
+					leaf.setMrl(mrl);
+					mediaPlayer.playMedia(current.getMrl());
+				}
+				catch (Exception e) {
+					LOGGER.error(e.getMessage(), e);
+					playNext();
+				}
+			}
+			else {
+				mediaPlayer.playMedia(current.getMrl());
+			}
 		}
 	}
 	
