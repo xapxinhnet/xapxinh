@@ -227,7 +227,11 @@ public class EmbeddedMediaListPlayer {
 					String mrl = HttpRequestUtil.sendHttpGETRequest(AppConfig.getInstance().DATA_SERVER_URL 
 							+ "videos/" + leaf.getUrl() + "/videourl?mac=" + AppProperties.getHardwareId());
 					leaf.setMrl(mrl);
-					mediaPlayer.playMedia(current.getMrl());
+					String[] options = {
+			                ":file-caching=0",
+			                ":network-caching=300",
+			                ":sout = #transcode{vcodec=x264,vb=800,scale=0.25,acodec=none,fps=23}"};
+					mediaPlayer.playMedia(current.getMrl(), options);
 				}
 				catch (Exception e) {
 					LOGGER.error(e.getMessage(), e);
@@ -235,7 +239,11 @@ public class EmbeddedMediaListPlayer {
 				}
 			}
 			else {
-				mediaPlayer.playMedia(current.getMrl());
+				String[] options = {
+		                ":file-caching=0",
+		                ":network-caching=300",
+		                ":sout = #transcode{vcodec=x264,vb=800,scale=0.25,acodec=none,fps=23}"};
+				mediaPlayer.playMedia(current.getMrl(), options);
 			}
 		}
 	}
