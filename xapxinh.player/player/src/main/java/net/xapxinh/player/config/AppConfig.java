@@ -27,7 +27,8 @@ public class AppConfig {
 			appProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties"));
 		}
 		catch (final IOException ex) {
-			ex.printStackTrace();
+			LOGGER.error(ex.getMessage(), ex);
+			System.exit(0);
 		}
 		DATA_SERVER_URL = appProperties.getProperty("data_server_url");
 		if (UserConfig.getInstance().SERVER_HOST != null) {
