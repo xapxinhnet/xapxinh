@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
+		>
+
+	<!-- Database Configuration -->
+	<import resource="data-source.xml"/>
+	<import resource="data-access.xml"/>
+ 	
+	<bean id="appContext" class="net.xapxinh.center.server.AppContext" />
+	
+	<bean id="dataServiceApi" class="net.xapxinh.center.server.api.data.DataServiceApiImpl">
+	</bean>
+	
+	<bean id="playerConnectionPool" class="net.xapxinh.center.server.service.player.PlayerConnectionPool">
+	     <constructor-arg ref="playerPersistenceService" />
+	</bean>
+	
+	<bean id="playerApi" class="net.xapxinh.center.server.api.player.XmpPlayerApi">
+	</bean>
+	
+	<bean id="playerCaches" class="net.xapxinh.center.server.service.player.PlayerCaches">
+	</bean>
+	
+	<bean id="playerService" class="net.xapxinh.center.server.service.player.PlayerServiceImpl">
+	    <constructor-arg ref="playerApi" />
+	    <constructor-arg ref="playerConnectionPool" />
+	    <constructor-arg ref="playerCaches" />
+	    <constructor-arg ref="dataServiceApi" />
+	</bean>
+	
+	<bean id="dataService" class="net.xapxinh.center.server.service.data.DataServiceImpl">
+	    <constructor-arg ref="dataServiceApi" />
+	    <constructor-arg ref="playerService" />
+	</bean>
+	
+	<mvc:interceptors>
+	  <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/kookies/**"/>
+            <bean class="net.xapxinh.center.server.webmvc.AuthorizedInterceptor"></bean>
+        </mvc:interceptor>  	
+    </mvc:interceptors> 
+    
+	<context:component-scan base-package="net.xapxinh.center.server.webmvc" />
+	
+</beans>

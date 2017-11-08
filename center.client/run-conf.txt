@@ -1,0 +1,5 @@
+Open xapxinh.client.xml and change path and docBase arcordingly 
+Copy xapxinh.client.xml to $tomcat/conf/Catalina/localhost/
+
+To run as external server:
+-src src/main/java -launcherDir C:/Users/TSA1HC/Projects/xapxinh/center.client/src/main/webapp net.xapxinh.center.Play net.xapxinh.center.Login

@@ -1,0 +1,236 @@
+/** Add css rules here for your application. */
+
+button:focus {outline:0 !important;}
+*:focus {outline:none}
+*:focus {outline:none !important}
+
+html {
+	height: 100%;
+	-webkit-text-size-adjust: none
+}
+
+body {
+	height: 100%;
+	margin: 0px !important;
+	font-family: Roboto,arial,sans-serif !important;
+}
+
+a {
+	color: #66FFFF;
+	font-style: italic;
+}
+
+h1 {
+	font-size: 16px;
+	font-weight: bold;
+	color: #777777;
+	margin: 40px 0px 70px;
+	text-align: center;
+}
+
+/*  GWT - Override >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+.gwt-Button {
+	/* background: url("images/hborder.png") repeat-x 0px -27px;*/
+	/* border: 1px outset #000;*/
+	border: none !important;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.gwt-Button:active {
+	border-style: solid !important;
+	border-width: 0px 0px !important;
+	-moz-border-image: none !important;
+	-webkit-border-image: none !important;
+	-o-border-image: url("images/borderimg_active.png") none !important;
+	border-image: none !important;
+}
+
+.gwt-Button:hover {
+	border-style: solid !important;
+	border-width: 0px 0px !important;
+	-moz-border-image: url("images/borderimg_hover.png") 0 5 stretch
+		!important;
+	-webkit-border-image: url("images/borderimg_hover.png") 0 5 stretch
+		!important;
+	-o-border-image: url("images/borderimg_hover.png") 0 5 stretch
+		!important;
+	border-image: url("images/borderimg_hover.png") 0 5 stretch !important;
+}
+
+.gwt-Button[disabled] {
+	filter: alpha(opacity = 50) !important;
+	opacity: 0.5 !important;
+	border: none !important;
+}
+
+.gwt-Button[disabled]:hover {
+	border: none !important;
+}
+
+.gwt-TextBox {
+	padding: 4px 4px !important;
+}
+
+/* Header >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+#header {
+	width: 100%;
+	height: 54px;
+	position: fixed;
+	z-index: 1000;
+	background-color: #f1f1f1; 
+	border-bottom: 1px solid rgb(221, 221, 221);
+}
+
+#spinner {
+  	position: absolute;
+    width: 10px;
+    height: 5px;
+    top: 47px;
+    left: 14px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    z-index: 9999;
+    background-color: #dbdbdb;
+}
+
+#spinner.loading {
+}
+
+#spinner.normal {	
+}
+
+@keyframes push {
+  50% {
+    left: 50px;
+  }
+}
+
+#spinner.loading:before {
+  content: '';
+    position: absolute;
+    border-radius: 15px;
+    width: 10px;
+    height: 5px;
+    left: 0;
+    background: #53bb66;
+    -webkit-animation: push 1s infinite linear;
+    animation: push 1.s infinite linear;
+}
+
+@-webkit-keyframes push {
+  50% {
+    left: 30px;
+  }
+}
+
+@keyframes push {
+  50% {
+    left: 30px;
+  }
+}
+
+/* Center  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+#center {
+	position: absolute;
+	right: 0px;
+	padding: 0px 5px;
+	min-width: 310px; /* excluding padding-left-right 5px */
+	overflow: auto;
+	top: 55px;
+}
+
+@media only screen and (max-width: 639px) { /* mobile */
+	#center {
+		left: 0px;
+		bottom: 50px;
+	}
+}
+
+@media only screen and (min-width: 640px) { /* tablet */
+	#center {
+		left: 230px;
+		bottom: 50px;
+	}
+}
+
+#footer {
+	position: fixed;
+	right: 0px;
+	left: 0px;
+	bottom: 0px;
+	height: 50px;
+	min-width: 320px;
+	background-color: #f1f1f1; 
+	border-top: 1px solid rgb(221, 221, 221);
+}
+
+.popup {
+	z-index: 999;
+	overflow: auto !important;
+	position: fixed !important;
+}
+
+.popup.message {	
+	right: 1px;
+	left: auto !important;
+	bottom: 52px !important;
+	height: 50px;
+	width: 316px;
+	color: #fff;
+	top: auto !important;
+}
+
+.popup.message .container {
+	width: 100%;
+	height: 100%;
+}
+
+.popup.message .icon {
+	width: 40px; height: 40px;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+}
+
+.popup.message .messageWrapper {
+	position: absolute;
+	top: 0px;
+	left: 40px;
+	right: 0px;
+	bottom: 0px;
+	overflow: auto;
+	padding: 15px 7px;
+}
+
+.popup.message .text {
+	
+}
+
+.popup.message.success {
+	background-color: rgba(88, 201, 79, 0.75);
+}
+.popup.message.success .icon {
+	background: url(images/message.png) center 0px no-repeat;
+}
+
+.popup.message.error {	
+	background-color: rgba(201, 67, 40, 0.75);
+}
+.popup.message.error .icon {
+	background: url(images/message.png) center -40px no-repeat;
+}
+
+.popup.message.warning {
+	background-color: rgba(230, 194, 49, 0.75);
+}
+.popup.message.warning .icon {
+	background: url(images/message.png) center -80px no-repeat;
+}
+
+.popup.message.normal {	
+	background-color: rgba(43, 144, 204, 0.75);
+}
+.popup.message.normal .icon {
+	background: url(images/message.png) center -120px no-repeat;
+}

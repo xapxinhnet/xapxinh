@@ -1,0 +1,12 @@
+/center/.gwt/
+/center/bin-deploy/
+/center/gwt-unitCache/
+/center/war/logs/
+/center/war/WEB-INF/classes/
+/center/war/WEB-INF/deploy/
+/filesrv/build/
+/datasrv/build/
+/player/play/logs/
+/player/vlc/
+/player/nir/
+/play/target/

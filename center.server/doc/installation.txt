@@ -1,0 +1,2 @@
+Open center.xml and change path and docBase arcordingly 
+Copy center.xml to $tomcat/conf/Catalina/localhost/

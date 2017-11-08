@@ -1,0 +1,3 @@
+Version = 1.1.1 Release_date = 2015/12/26
+	1. Rename database to xcenter
+	2. Change cloud data service url to /dataservice/data

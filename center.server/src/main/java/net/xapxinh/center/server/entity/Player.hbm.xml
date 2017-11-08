@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    
+	<class name="net.xapxinh.center.server.entity.Player" table="players">
+		
+		<id name="id" type="long" column="id">
+			<generator class="native" />
+		</id>
+		
+		<property name="name">
+			<column name="name" />
+		</property>
+		
+		<property name="ip">
+			<column name="ip" />
+		</property>
+		
+		<property name="port">
+			<column name="port" />
+		</property>
+		
+		<property name="mac">
+			<column name="mac" />
+		</property>
+		
+		<property name="version">
+			<column name="version" />
+		</property>	
+				
+		<property name="connectedTime">
+			<column name="connected_time" />
+		</property>
+		
+	</class>
+	
+</hibernate-mapping>

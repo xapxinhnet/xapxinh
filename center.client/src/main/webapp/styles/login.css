@@ -1,0 +1,72 @@
+.login_form {
+	margin: 0px auto;	
+	background: none !important;
+	width: 300px;
+	height: 300px;
+	top: 75px !important;
+}
+
+.login_form .container {
+	margin: auto auto;
+}
+.login_form .logo {
+	background: url(images/logo.png) left center no-repeat;
+}
+
+.login_form .user {
+	display: block;
+	margin: 10px 0px 5px 0px;
+}
+
+.login_form .password {
+	display: block;
+	margin: 15px 0px 5px 0px;
+}
+
+.login_form .remember {
+	display: block;
+	margin: 25px 0px 10px -5px;
+}
+
+.login_form .submit {
+	display: block;
+	background: none repeat scroll 0% 0% #ddd;
+	border: 1px solid #aaa !important;
+	border-radius: 3px 3px 3px 3px !important;
+	color: rgb(10, 23, 37) !important;
+	float: right;
+}
+
+.login_form .container .login_language .vnFlag{
+	display: inline-block;
+	background: url(images/flag_en_vn.png) -24px  center no-repeat;
+}
+
+.login_form .container .login_language .enFlag{
+	display: inline-block;
+	background: url(images/flag_en_vn.png) 0px center no-repeat;
+}
+
+.login_form .container .login_language .vnFlag:hover, .login_form .container .login_language .enFlag:hover{
+	cursor: pointer;
+}
+
+.login_form .container .login_language{
+	float: right;
+	margin-top:	-50px;
+	text-align: right;
+}
+
+@media only screen and (min-width: 640px) { /* tablet */
+	#center {
+		width: 100%;
+		left: auto !important;
+	}
+}
+
+.popup.message.login {
+	width: 256px;
+	top: 5px !important;
+	left: calc(50% - 130px) !important;
+	z-index: 2000;
+}
